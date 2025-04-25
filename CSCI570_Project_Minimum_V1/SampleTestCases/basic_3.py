@@ -55,6 +55,7 @@ def write_output(new_sequence, path="output0.txt", ):
         file.write(new_sequence)
 
 
+
 #//////////////////////  DP FUNCTION  //////////////////////////
 def basic_solution():
     pass
