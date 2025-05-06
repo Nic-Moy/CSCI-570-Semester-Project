@@ -1,0 +1,27 @@
+# Python byte‐compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment (if you create one locally)
+env/
+venv/
+.venv/
+ENV/
+.Python
+
+# PyCharm / JetBrains IDE files
+.idea/
+*.iml
+
+# VSCode settings (if you use it)
+.vscode/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Coverage / test output (if you ever add tests)
+.coverage
+htmlcov/
+.pytest_cache/
