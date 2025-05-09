@@ -1,6 +1,6 @@
 import sys
 import time
-#import psutil
+import psutil
 from resource import *
 import numpy as np
 
@@ -108,13 +108,37 @@ def basic_solution(sequence1, sequence2):
     return opt[m][n], aligned_X, aligned_Y
 
 
+def process_memory():
+    process = psutil.Process()
+    memory_info = process.memory_info()
+    memory_consumed = int(memory_info.rss/1024)
+    return memory_consumed
 
 
-#//////////////////////  MAIN FUNCTION  //////////////////////////
-sequence1, j_nums, sequence2, k_nums = read_input()
-new_seq_1 = string_generator(sequence1, j_nums)
-new_seq_2 = string_generator(sequence2, k_nums)
-print(basic_solution(new_seq_1, new_seq_2))
+def main():
+    if len(sys.argv) != 3:
+        print("Usage: python3 basic_3.py <input_file> <output_file>")
+        return
 
-#write_output(new_seq_1)
-#fake change
+    input_path = sys.argv[1]
+    output_path = sys.argv[2]
+
+    sequence1, j_nums, sequence2, k_nums = read_input(input_path)
+    new_seq_1 = string_generator(sequence1, j_nums)
+    new_seq_2 = string_generator(sequence2, k_nums)
+
+    start_time = time.time()
+    cost, aligned_X, aligned_Y = basic_solution(new_seq_1, new_seq_2)
+    end_time = time.time()
+    time_taken_ms = (end_time - start_time) * 1000
+    memory_kb = process_memory()
+
+    with open(output_path, 'w') as file:
+        file.write(f"{cost}\n")
+        file.write(f"{aligned_X}\n")
+        file.write(f"{aligned_Y}\n")
+        file.write(f"{time_taken_ms}\n")
+        file.write(f"{memory_kb}\n")
+
+if __name__ == "__main__":
+    main()
