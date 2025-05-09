@@ -2,7 +2,6 @@ import sys
 import time
 import psutil
 from resource import *
-import numpy as np
 
 #////////////////////// GLOBAL VARIABLES  //////////////////////////
 letter_to_idx = {'A': 0, 'C': 1, 'G': 2, 'T': 3}
@@ -55,6 +54,12 @@ def write_output(new_sequence, path="output0.txt", ):
     with open(path, 'w') as file:
         file.write(new_sequence)
 
+def process_memory():
+    process = psutil.Process()
+    memory_info = process.memory_info()
+    memory_consumed = int(memory_info.rss/1024)
+    return memory_consumed
+
 
 
 #//////////////////////  DP FUNCTION  //////////////////////////
@@ -69,7 +74,7 @@ def basic_solution(sequence1, sequence2):
     for y in range(1, n+1):
         opt[0][y] = y * gap_penalty
 
-
+    #bottom up pass
     for i in range(1,m+1):
         for j in range(1,n+1):
             offset1 = letter_to_idx[sequence1[i-1]]
@@ -79,6 +84,7 @@ def basic_solution(sequence1, sequence2):
                             opt[i-1][j] + gap_penalty,
                             opt[i][j-1] + gap_penalty)
 
+    #top down pass
     i, j = m, n
     align_X, align_Y = [], []
     while i > 0 or j > 0:
@@ -110,13 +116,35 @@ def basic_solution(sequence1, sequence2):
 
 
 #//////////////////////  MAIN FUNCTION  //////////////////////////
-sequence1, j_nums, sequence2, k_nums = read_input()
-new_seq_1 = string_generator(sequence1, j_nums)
-new_seq_2 = string_generator(sequence2, k_nums)
-start_time = time.time()
-print(basic_solution(new_seq_1, new_seq_2))
-end_time = time.time()
-print("Time taken: ", (end_time - start_time) * 1000, "milliseconds")
+def main():
+    if len(sys.argv) != 3:
+        print("INCORRECT INPUT: python3 basic_3.py <input_file> <output_file>")
+        return
+
+    input_path = sys.argv[1]
+    output_path = sys.argv[2]
+
+    sequence1, j_nums, sequence2, k_nums = read_input(input_path)
+    new_seq_1 = string_generator(sequence1, j_nums)
+    new_seq_2 = string_generator(sequence2, k_nums)
+
+    start_time = time.time()
+    cost, aligned_X, aligned_Y = basic_solution(new_seq_1, new_seq_2)
+    end_time = time.time()
+    memory_kb = process_memory()
+    time_taken_ms = (end_time - start_time) * 1000
 
 
-#write_output(new_seq_1)
+    print("Time taken:", time_taken_ms, "milliseconds")
+    print("Memory used:", memory_kb)
+
+    with open(output_path, 'w') as file:
+        file.write(f"{cost}\n")
+        file.write(f"{aligned_X}\n")
+        file.write(f"{aligned_Y}\n")
+        file.write(f"{time_taken_ms}\n")
+        file.write(f"{memory_kb}\n")
+
+if __name__ == "__main__":
+    main()
+
