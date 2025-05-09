@@ -1,6 +1,6 @@
 import sys
 import time
-import psutil
+#import psutil
 from resource import *
 import numpy as np
 
@@ -82,6 +82,7 @@ def basic_solution(sequence1, sequence2):
     i, j = m, n
     align_X, align_Y = [], []
     while i > 0 or j > 0:
+        # diag?
         if i > 0 and j > 0:
             a = letter_to_idx[sequence1[i - 1]]
             b = letter_to_idx[sequence2[j - 1]]
@@ -113,10 +114,7 @@ def basic_solution(sequence1, sequence2):
 sequence1, j_nums, sequence2, k_nums = read_input()
 new_seq_1 = string_generator(sequence1, j_nums)
 new_seq_2 = string_generator(sequence2, k_nums)
-start_time = time.time()
 print(basic_solution(new_seq_1, new_seq_2))
-end_time = time.time()
-print("Time taken: ", (end_time - start_time) * 1000, "milliseconds")
-
 
 #write_output(new_seq_1)
+#fake change
