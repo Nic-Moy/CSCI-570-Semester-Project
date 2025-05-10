@@ -50,17 +50,6 @@ def string_generator(sequence, nums):
     return new_sequence
 
 
-def write_output(new_sequence, path="output0.txt", ):
-    with open(path, 'w') as file:
-        file.write(new_sequence)
-
-def process_memory():
-    process = psutil.Process()
-    memory_info = process.memory_info()
-    memory_consumed = int(memory_info.rss/1024)
-    return memory_consumed
-
-
 
 #//////////////////////  DP FUNCTION  //////////////////////////
 def basic_solution(sequence1, sequence2):
@@ -88,6 +77,7 @@ def basic_solution(sequence1, sequence2):
     i, j = m, n
     align_X, align_Y = [], []
     while i > 0 or j > 0:
+        # diag?
         if i > 0 and j > 0:
             a = letter_to_idx[sequence1[i - 1]]
             b = letter_to_idx[sequence2[j - 1]]
@@ -113,12 +103,16 @@ def basic_solution(sequence1, sequence2):
     return opt[m][n], aligned_X, aligned_Y
 
 
+def process_memory():
+    process = psutil.Process()
+    memory_info = process.memory_info()
+    memory_consumed = int(memory_info.rss/1024)
+    return memory_consumed
 
 
-#//////////////////////  MAIN FUNCTION  //////////////////////////
 def main():
     if len(sys.argv) != 3:
-        print("INCORRECT INPUT: python3 basic_3.py <input_file> <output_file>")
+        print("Usage: python3 basic_3.py <input_file> <output_file>")
         return
 
     input_path = sys.argv[1]
@@ -131,12 +125,8 @@ def main():
     start_time = time.time()
     cost, aligned_X, aligned_Y = basic_solution(new_seq_1, new_seq_2)
     end_time = time.time()
-    memory_kb = process_memory()
     time_taken_ms = (end_time - start_time) * 1000
-
-
-    print("Time taken:", time_taken_ms, "milliseconds")
-    print("Memory used:", memory_kb)
+    memory_kb = process_memory()
 
     with open(output_path, 'w') as file:
         file.write(f"{cost}\n")
@@ -147,4 +137,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
