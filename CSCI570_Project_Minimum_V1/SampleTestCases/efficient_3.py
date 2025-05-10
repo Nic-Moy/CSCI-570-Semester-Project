@@ -2,7 +2,6 @@
 
 import sys
 import time
-from resource import *
 import psutil
 
 #////////////////////// GLOBAL VARIABLES  //////////////////////////

@@ -1,7 +1,6 @@
 import sys
 import time
 import psutil
-from resource import *
 
 #////////////////////// GLOBAL VARIABLES  //////////////////////////
 letter_to_idx = {'A': 0, 'C': 1, 'G': 2, 'T': 3}
