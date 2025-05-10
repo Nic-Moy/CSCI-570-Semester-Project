@@ -50,11 +50,6 @@ def string_generator(sequence, nums):
     return new_sequence
 
 
-def write_output(new_sequence, path="output0.txt", ):
-    with open(path, 'w') as file:
-        file.write(new_sequence)
-
-
 
 #//////////////////////  DP FUNCTION  //////////////////////////
 def basic_solution(sequence1, sequence2):
